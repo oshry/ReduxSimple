@@ -6,18 +6,43 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['react', 'es2015', 'stage-1']
+        use: {
+          loader: "babel-loader"
         }
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [{
+          loader: 'file-loader',
+          options: {}
+        }]
+      },
+      {
+        test: /\.(css|scss)$/,
+        use: [{
+          loader: "style-loader"
+        }, {
+          loader: "css-loader"
+        }, {
+          loader: "sass-loader",
+          options: {
+            includePaths: ["absolute/path/a", "absolute/path/b"]
+          }
+        }]
       }
     ]
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx']
   },
   devServer: {
     historyApiFallback: true,
@@ -25,6 +50,7 @@ module.exports = {
     watchOptions: {
       aggregateTimeout: 300,
       poll: 1000
-    }
+    },
+    port: 9110
   }
 };

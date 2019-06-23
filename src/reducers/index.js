@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
+import gitHubReducer from './gitHubReducer';
 
 const rootReducer = combineReducers({
-  state: (state = {}) => state
+  gitHub: gitHubReducer,
 });
 
 export default rootReducer;
