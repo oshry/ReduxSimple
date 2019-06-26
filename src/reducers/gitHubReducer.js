@@ -1,6 +1,7 @@
 import {
     GET_USERS,
-    USERS_LOADING
+    USERS_LOADING,
+    SET_USERS
 } from '../actions/types';
 
 const initialState = {
@@ -9,6 +10,8 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
+    // console.log('2222222');
+    console.log(action.type);
     switch (action.type) {
         case USERS_LOADING:
             return {
@@ -16,6 +19,12 @@ export default function (state = initialState, action) {
                 loading: true
             };
         case GET_USERS:
+            return {
+                ...state,
+                users: action.payload,
+                loading: false
+            };
+        case SET_USERS:
             return {
                 ...state,
                 users: action.payload,
