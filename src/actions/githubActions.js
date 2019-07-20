@@ -15,9 +15,14 @@ export const setProfileLoading = () => {
 
 // Get profile by handle
 export const searchProfile = handle => dispatch => {
+    const clientId = require('../config/gitHub').clientId;
+    const clientSecret = require('../config/gitHub').clientSecret;
+    const count = 5;
+    const sort = 'created: asc';
+
     dispatch(setProfileLoading());
     axios
-        .get(`https://api.github.com/search/users?q=${handle}`)
+        .get(`https://api.github.com/search/users?q=${handle}&client_id=${clientId}&client_secret=${clientSecret}&sort=${sort}&per_page=${count}`)
         .then(res => {
             dispatch({
                 type: GET_USERS,

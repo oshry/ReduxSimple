@@ -10,7 +10,6 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-    // console.log('2222222');
     console.log(action.type);
     switch (action.type) {
         case USERS_LOADING:
