@@ -29,12 +29,6 @@ export default function (state = initialState, action) {
                 users: action.payload,
                 loading: false
             };
-        case SORT_BY:
-            return {
-                ...state,
-                users: action.payload,
-                loading: false
-            };
         default:
             return state;
     }

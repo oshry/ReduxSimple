@@ -25,11 +25,11 @@ export default function (state = filtersReducerDefaultState, action) {
         //         ...state,
         //         endYear: action.endYear
         //     };
-        case 'SORT_BY':
-            console.log('usersssssssssssssssssssssssssssssssssssssssssssssss');
+        case SORT_BY:
             return {
                 ...state,
-                sortBy: action.sortType
+                users: action.payload,
+                loading: false
             };
         // case 'CLEAR':
         //     return {
