@@ -1,9 +1,10 @@
 import axios from 'axios';
-
+import isEmpty from '../validation/is-empty'
 import {
     GET_USERS,
     USERS_LOADING,
-    SET_USERS
+    SET_USERS,
+    SORT_BY
 } from './types';
 
 // Profile loading
@@ -13,16 +14,25 @@ export const setProfileLoading = () => {
     };
 };
 
+export const sortBy = (users)  => {
+    console.log('sortBy github actions');
+    return {
+        type: SORT_BY,
+        payload: users
+    };
+};
+
 // Get profile by handle
-export const searchProfile = handle => dispatch => {
+export const searchProfile = (handle, per_page) => dispatch => {
     const clientId = require('../config/gitHub').clientId;
     const clientSecret = require('../config/gitHub').clientSecret;
-    const count = 5;
+    if(isEmpty(per_page))
+        per_page = 5;
     const sort = 'created: asc';
 
     dispatch(setProfileLoading());
     axios
-        .get(`https://api.github.com/search/users?q=${handle}&client_id=${clientId}&client_secret=${clientSecret}&sort=${sort}&per_page=${count}`)
+        .get(`https://api.github.com/search/users?q=${handle}&client_id=${clientId}&client_secret=${clientSecret}&sort=${sort}&per_page=${per_page}`)
         .then(res => {
             dispatch({
                 type: GET_USERS,

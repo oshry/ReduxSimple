@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { searchProfile } from '../actions/githubActions';
 import Spinner from './common/Spinner';
+import Filter from './filter'
 
 class App extends Component {
   constructor() {
@@ -9,56 +10,12 @@ class App extends Component {
     this.state = {
       loading: false,
       search: '',
+      per_page: 5,
       errors: {}
     };
-    this.sortBy = this.sortBy.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.perPage = this.perPage.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-  compareValues(key, order='asc') {
-    return function(a, b) {
-      if(!a.hasOwnProperty(key) ||
-          !b.hasOwnProperty(key)) {
-        return 0;
-      }
-
-      const varA = (typeof a[key] === 'string') ?
-          a[key].toUpperCase() : a[key];
-      const varB = (typeof b[key] === 'string') ?
-          b[key].toUpperCase() : b[key];
-
-      let comparison = 0;
-      if (varA > varB) {
-        comparison = 1;
-      } else if (varA < varB) {
-        comparison = -1;
-      }
-      return (
-          (order == 'desc') ?
-              (comparison * -1) : comparison
-      );
-    };
-  }
-  sortBy(e){
-    let toSort = this.state.users;
-    toSort.sort(this.compareValues(e.target.value, e.target.getAttribute("direction")))
-    console.log(toSort);
-    this.setState({users: toSort});
-  }
-
-  // componentWillUpdate(nextProps, nextState){
-  //   // input change
-  // }
-  // componentDidUpdate(prevProps, prevState) {
-  //   console.log('componentDidUpdate');
-  // }
-  // static getDerivedStateFromProps(nextProps, prevState){
-  //   console.log('sdsdsdsdsds1111');
-  //   if(nextProps.someValue!==prevState.someValue){
-  //     return { someState: nextProps.someValue};
-  //   }
-  //   else return null;
-  // }
 
   componentWillReceiveProps(nextProps) {
       if(nextProps.users){
@@ -70,21 +27,13 @@ class App extends Component {
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
+  perPage(e){
+    this.props.searchProfile(this.state.search, this.state.per_page);
+  }
+
   onSubmit(e) {
     e.preventDefault();
-    // const searchData = {
-    //     search: this.state.search
-    // };
-    // console.log('yesssss');
-    setTimeout(() => {
-      this.setState({ loading: true });
-    }, 3000);
-
     this.props.searchProfile(this.state.search);
-
-
-    // this.forceUpdate();
-    // this.setState({ [e.target.name]: e.target.value });
   }
 
   render() {
@@ -98,7 +47,6 @@ class App extends Component {
     } else {
 
       if (this.props.users) {
-        // console.log(users);
         const usersTable = this.props.users.map((user, key) => (
             <tr key={key}>
               <th scope="row">{user.id}</th>
@@ -134,24 +82,20 @@ class App extends Component {
         <div className="container">
           <br/>
           <div className="row justify-content-center">
-            <div className="col-12 col-md-10 col-lg-8">
-              <div className="sort-box">
+            <div className="col-12 col-md-10 col-lg-8 row">
+              <Filter users={this.props.users} onChange={this.onChange.bind(this)} />
+              <div className="sort-box col-lg-6">
+                <div className="title"><p>Sort</p></div>
                 <ul className="list-group list-group-horizontal">
                   <li className="list-group-item">
-                    <button onClick={this.sortBy} value="id" direction="asc" >ID asc</button>
-                    <button onClick={this.sortBy} value="id" direction="desc" >ID desc</button>
-                  </li>
-                  <li className="list-group-item">
-                    <button onClick={this.sortBy} value="login" direction="asc" >Name asc</button>
-                    <button onClick={this.sortBy} value="login" direction="desc" >Name desc</button>
-                  </li>
-                  <li className="list-group-item">
-                    <button onClick={this.sortBy} value="url" direction="asc" >github url asc</button>
-                    <button onClick={this.sortBy} value="url" direction="desc" >github url desc</button>
+                    <input name="per_page"
+                           onChange={this.onChange.bind(this)}
+                           onBlur={this.perPage}
+                           placeholder="5"/>
                   </li>
                 </ul>
               </div>
-              <form className="card card-sm" onSubmit={this.onSubmit}>
+              <form className="card card-sm col-lg-12" onSubmit={this.onSubmit}>
                 <div className="card-body row no-gutters align-items-center">
                   <div className="col-auto">
                     <i className="fas fa-search h4 text-body"></i>
@@ -160,7 +104,7 @@ class App extends Component {
                     <input className="form-control form-control-lg form-control-borderless"
                            name="search"
                            type="search"
-                           onChange={this.onChange}
+                           onChange={this.onChange.bind(this)}
                            placeholder="Search topics or keywords" />
                   </div>
                   <div className="col-auto">

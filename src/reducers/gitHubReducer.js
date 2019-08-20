@@ -1,7 +1,7 @@
 import {
     GET_USERS,
     USERS_LOADING,
-    SET_USERS
+    SET_USERS, SORT_BY
 } from '../actions/types';
 
 const initialState = {
@@ -24,6 +24,12 @@ export default function (state = initialState, action) {
                 loading: false
             };
         case SET_USERS:
+            return {
+                ...state,
+                users: action.payload,
+                loading: false
+            };
+        case SORT_BY:
             return {
                 ...state,
                 users: action.payload,
