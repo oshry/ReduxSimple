@@ -25,7 +25,11 @@ class App extends Component {
   }
 
   onChange(e) {
+    console.log('onChange');
     this.setState({ [e.target.name]: e.target.value });
+    console.log(this.state.search);
+    if(this.state.search != '' && typeof this.state.search != 'undefined')
+      this.props.searchProfile(this.state.search);
   }
   perPage(e){
     this.props.searchProfile(this.state.search, this.state.per_page);

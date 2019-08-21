@@ -34,10 +34,7 @@ export const searchProfile = (handle, per_page) => dispatch => {
     axios
         .get(`https://api.github.com/search/users?q=${handle}&client_id=${clientId}&client_secret=${clientSecret}&sort=${sort}&per_page=${per_page}`)
         .then(res => {
-            dispatch({
-                type: GET_USERS,
-                payload: res.data.items
-            })
+            dispatch(setUsers(res.data.items));
             return res;
         }).then(res => {
             // dispatch({
