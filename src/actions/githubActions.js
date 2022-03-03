@@ -14,6 +14,14 @@ export const setProfileLoading = () => {
     };
 };
 
+// Set logged in user
+export const setUsers = (users) => {
+    return {
+        type: SET_USERS,
+        payload: users
+    }
+}
+
 export const sortBy = (users)  => {
     console.log('sortBy github actions');
     return {
@@ -21,7 +29,6 @@ export const sortBy = (users)  => {
         payload: users
     };
 };
-
 // Get profile by handle
 export const searchProfile = (handle, per_page) => dispatch => {
     const clientId = require('../config/gitHub').clientId;
@@ -52,10 +59,3 @@ export const searchProfile = (handle, per_page) => dispatch => {
             }
         );
 };
-// Set logged in user
-export const setUsers = (users) => {
-    return {
-        type: SET_USERS,
-        payload: users
-    }
-}
